@@ -1,0 +1,109 @@
+<!DOCTYPE unspecified PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>about :: the words of the budget</title>
+<style type="text/css">
+body {
+	margin: 0px;
+	background: rgba(255, 255, 255, 1);
+}
+
+#controlsContainer {
+	position: absolute; 
+	left: 0px; 
+	bottom: 0px; 
+	z-index: 2;
+	background: rgba(255, 255, 255, 0.3);
+	margin: 8px;
+}
+#optsContainer {
+	margin: 4px;
+	font: 12px sans-serif;
+}
+#linksContainer {
+	font: 18px serif;
+	font-weight: bold;
+	color: rgba(0, 0, 0, 1);
+	margin: 4px;
+}
+#linksContainer span {
+	padding: 2px;
+	border: 1px solid rgba(0, 0, 0, 1);
+	background: rgba(255, 255, 255, 1);
+}
+#linksContainer a {
+	padding: 2px;
+	background: rgba(0, 0, 0, 1);
+	color: rgba(255, 255, 255, 1);
+}
+#linksContainer div {
+	margin: 6px;
+}
+
+#didactic {
+	float: left;
+	width: 600px;
+	
+	font: 12px sans-serif;
+	
+	margin: 8px;
+	padding: 8px;
+}
+#notes {
+	float: left;
+	width: 600px;
+	
+	font: 12px sans-serif;
+	
+	margin: 8px;
+	padding: 8px;
+}
+
+#notes span {
+	background: rgb(255, 192, 192);
+	color: rgb(0, 0, 0);
+}
+
+</style>
+
+</head>
+<body>
+<div id="didactic"><p><a href="http://whatwepayfor.com">whatwepayfor.org</a> provides access to digital form of the federal budget. 
+In the data, each year's budget is presented as budget spending accounts,
+where each account has one broad function, and one more specific sub-function.
+
+However, the name of the account, not the function or sub-function,
+seems to give the most understanding into the type of 
+social benefit the account creates. 
+From the view of a single word, one can see the benefit of the budget most succinctly.
+
+<em>the words of the budget</em> explores the US federal spending broken down by word.
+</p>
+<p>Submitted as part of the <a href="http://datavizchallenge.org/">March 2011 Data Visualization Challenge</a>.</p>
+<p>Brien Colwell, <a href="http://lodes.nu">Life On the Digitally Enhanced Streets (LODES)</a></p>
+</div>
+<div id="notes">
+<p>Data were pulled from the web API using "getBudgetAccount",
+using a Mathematica script.
+<span>Some budget accounts have negative spending.</span> I'm not sure the meaning of this,
+but I interpreted it as not spending. <span>Some budget accounts have redundant names.</span>
+I assume the government just stops trying to be creative for some of these.
+</p>
+<p>After importing from the API, the Mathematica script writes a set of JavaScript files that
+load into the browser to supply the data to the visualization.
+The visualization is written in JavaScript using HTML5 canvas and audio extension. </p>
+<p>Voices for <em>meet the words of the budget</em> were created with festival using
+the <a href="http://hts.sp.nitech.ac.jp/">Nitech HTS</a> voices.</p> 	
+<p>Word geometry data was created with a custom program to enable a "word mesh" in the browser.</p>
+<p>The <a href="">complete source code, scripts, and whatnot</a> for the project is available under a Creative Commons Attribution license.</p>
+</div>
+
+<div id="controlsContainer">
+<div id="linksContainer">
+<div><span>viewing: about the words of the budget</span></div>
+<div><a href="index.html">meet the words of the budget</a></div>
+<div><a href="accounts_and_trends.html">accounts and trends of the words of the budget</a></div>
+</div>
+</div>
+</body>
+</html>

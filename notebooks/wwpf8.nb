@@ -1,0 +1,2577 @@
+(* Content-type: application/mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 7.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       145,          7]
+NotebookDataLength[    100649,       2568]
+NotebookOptionsPosition[     97714,       2479]
+NotebookOutlinePosition[     98052,       2494]
+CellTagsIndexPosition[     98009,       2491]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"readableNumberSuffixes", "=", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<\>\"", ",", "\"\<k\>\"", ",", "\"\<m\>\"", ",", "\"\<b\>\"", ",", 
+     "\"\<t\>\""}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ReadableNumber", "[", "v_", "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", "ui", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"ui", "=", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"v", "\[LessEqual]", "1"}], ",", "0", ",", 
+         RowBox[{"Floor", "[", 
+          RowBox[{"Log", "[", 
+           RowBox[{"1000", ",", "v"}], "]"}], "]"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<~\>\"", "<>", 
+       RowBox[{"ToString", "[", 
+        RowBox[{"Floor", "[", 
+         RowBox[{"v", "/", 
+          RowBox[{"(", 
+           RowBox[{"1000", "^", "ui"}], ")"}]}], "]"}], "]"}], "<>", 
+       RowBox[{"readableNumberSuffixes", "[", 
+        RowBox[{"[", 
+         RowBox[{"ui", "+", "1"}], "]"}], "]"}]}]}]}], "\[IndentingNewLine]", 
+    "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.5098150107629757`*^9, 3.5098150747122393`*^9}, {
+  3.509816419103366*^9, 3.509816420525855*^9}, {3.5098168877887506`*^9, 
+  3.509816915379756*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Amount", "[", "v_", "]"}], ":=", 
+     RowBox[{"{", 
+      RowBox[{"v", ",", 
+       RowBox[{"ReadableNumber", "[", "v", "]"}]}], "}"}]}], ";"}], " ", 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Amount", "[", "v_", "]"}], ":=", "v"}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.509816373039011*^9, 3.509816382980035*^9}, {
+  3.5098305679732723`*^9, 3.509830573354391*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"ToBaseWord", "[", "w_", "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", "wn", "}"}], ",", 
+     RowBox[{
+      RowBox[{"wn", "=", 
+       RowBox[{"WordData", "[", "w", "]"}]}], ";", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", "wn", "]"}], "\[LessEqual]", "0"}], ",", "w", 
+        ",", 
+        RowBox[{"wn", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", "1"}], "]"}], "]"}]}], "]"}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"WordHasMeaningQ", "[", "w_", "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", "wn", "}"}], ",", 
+     RowBox[{
+      RowBox[{"wn", "=", 
+       RowBox[{"WordData", "[", 
+        RowBox[{"w", ",", "\"\<PartsOfSpeech\>\""}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"NumberQ", "[", "w", "]"}], "\[IndentingNewLine]", "||", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"Not", "[", 
+          RowBox[{"MemberQ", "[", 
+           RowBox[{"wn", ",", "\"\<Preposition\>\""}], "]"}], "]"}], 
+         "\[IndentingNewLine]", "&&", 
+         RowBox[{"Not", "[", 
+          RowBox[{"MemberQ", "[", 
+           RowBox[{"wn", ",", "\"\<Conjunction\>\""}], "]"}], "]"}], 
+         "\[IndentingNewLine]", "&&", 
+         RowBox[{"Not", "[", 
+          RowBox[{"MemberQ", "[", 
+           RowBox[{"wn", ",", "\"\<Determiner\>\""}], "]"}], "]"}]}], 
+        "\[IndentingNewLine]", ")"}]}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"RawYearData", "[", "year_", "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"expensesXml", ",", "accountInfo", ",", "wordToAccountIds"}], 
+      "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"expensesXml", "=", 
+       RowBox[{"Import", "[", 
+        RowBox[{
+         RowBox[{
+         "\"\<http://www.whatwepayfor.com/api/getBudgetAccount?income=100&\
+showChange=1&showExtra=1&year=\>\"", "<>", 
+          RowBox[{"ToString", "[", "year", "]"}]}], ",", "\"\<XML\>\""}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"accountInfo", "=", 
+       RowBox[{"SortBy", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"ReleaseHold", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"\"\<account\>\"", ",", 
+             RowBox[{"Hold", "[", 
+              RowBox[{"ToExpression", "[", "\"\<amounti\>\"", "]"}], "]"}], 
+             ",", "\"\<function\>\"", ",", "\"\<subfunction\>\""}], "}"}], "/.", 
+           RowBox[{
+            RowBox[{"Cases", "[", 
+             RowBox[{"expensesXml", ",", 
+              RowBox[{"XMLElement", "[", 
+               RowBox[{"\"\<item\>\"", ",", "__", ",", "__"}], "]"}], ",", 
+              "Infinity"}], "]"}], "[", 
+            RowBox[{"[", 
+             RowBox[{"All", ",", "2"}], "]"}], "]"}]}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"-", 
+            RowBox[{"#", "[", 
+             RowBox[{"[", "2", "]"}], "]"}]}], ")"}], "&"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"wordToAccountIds", "=", 
+       RowBox[{"Select", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"#", "[", 
+              RowBox[{"[", 
+               RowBox[{"1", ",", "1"}], "]"}], "]"}], ",", 
+             RowBox[{"#", "[", 
+              RowBox[{"[", 
+               RowBox[{"All", ",", "2"}], "]"}], "]"}]}], "}"}], "&"}], "/@", 
+          
+          RowBox[{"GatherBy", "[", "\[IndentingNewLine]", 
+           RowBox[{
+            RowBox[{"Flatten", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Function", "[", 
+                RowBox[{
+                 RowBox[{"{", "accountIndex", "}"}], ",", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"ToBaseWord", "[", 
+                    RowBox[{"ToLowerCase", "[", "#", "]"}], "]"}], ",", 
+                    "accountIndex"}], "}"}], "&"}], "/@", 
+                  RowBox[{"StringSplit", "[", 
+                   RowBox[{
+                    RowBox[{"accountInfo", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"accountIndex", ",", "1"}], "]"}], "]"}], ",", 
+                    RowBox[{
+                    "RegularExpression", "[", "\"\<[^a-zA-Z0-9]+\>\"", 
+                    "]"}]}], "]"}]}]}], "]"}], "/@", "\[IndentingNewLine]", 
+               RowBox[{"Range", "[", 
+                RowBox[{"1", ",", 
+                 RowBox[{"Length", "[", "accountInfo", "]"}]}], "]"}]}], ",", 
+              "1"}], "]"}], ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"#", "[", 
+              RowBox[{"[", "1", "]"}], "]"}], "&"}]}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"WordHasMeaningQ", "[", 
+           RowBox[{"#", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "]"}], "&"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"PrintTemporary", "[", "year", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"expensesXml", ",", "accountInfo", ",", "wordToAccountIds"}], 
+       "}"}]}]}], "\[IndentingNewLine]", "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.508031913204452*^9, 3.5080320526626577`*^9}, {
+   3.508032199195519*^9, 3.508032233390726*^9}, {3.508032323249168*^9, 
+   3.508032358704534*^9}, {3.508032401341689*^9, 3.5080324055248823`*^9}, {
+   3.5080330289596157`*^9, 3.5080330297177362`*^9}, {3.508034083533445*^9, 
+   3.508034098620694*^9}, {3.508034253816371*^9, 3.508034284421858*^9}, {
+   3.5080343427838707`*^9, 3.508034370606934*^9}, {3.508035107283321*^9, 
+   3.508035165730895*^9}, {3.508035242137938*^9, 3.508035243287088*^9}, {
+   3.508035441280404*^9, 3.5080356433908463`*^9}, 3.5080357435728827`*^9, {
+   3.508035842245386*^9, 3.508035864508975*^9}, {3.5080359625790462`*^9, 
+   3.5080359762901917`*^9}, {3.508036025401984*^9, 3.508036045359345*^9}, {
+   3.508036100489841*^9, 3.50803610635443*^9}, {3.508036434743162*^9, 
+   3.508036470239812*^9}, {3.508036760654183*^9, 3.508036839817337*^9}, {
+   3.50803694199817*^9, 3.508036950602131*^9}, {3.508036981370329*^9, 
+   3.50803725331323*^9}, {3.508037416638494*^9, 3.508037489721765*^9}, 
+   3.508037574492161*^9, {3.5080377945995493`*^9, 3.508037794880447*^9}, {
+   3.5080378415708103`*^9, 3.5080378804330673`*^9}, {3.508038378945924*^9, 
+   3.508038381438697*^9}, {3.5082084681535397`*^9, 3.5082085430970497`*^9}, {
+   3.508208693269293*^9, 3.508208705448677*^9}, {3.508544630562058*^9, 
+   3.5085446555874043`*^9}, {3.5085446980356207`*^9, 3.50854473438829*^9}, {
+   3.508544765303153*^9, 3.5085447825746*^9}, {3.508950967206354*^9, 
+   3.5089510088015633`*^9}, {3.5098153103668327`*^9, 3.509815367976376*^9}, 
+   3.5098154017652597`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"years", "=", 
+   RowBox[{"Range", "[", 
+    RowBox[{"1984", ",", "2010"}], "]"}]}], ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"allYearData", "=", 
+   RowBox[{"RawYearData", "/@", "years"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.508032437193894*^9, 3.508032464337996*^9}, 
+   3.508032496041975*^9, {3.5080350993508883`*^9, 3.5080351022673063`*^9}, {
+   3.508544770873159*^9, 3.508544773356229*^9}, {3.509815373027844*^9, 
+   3.509815378701419*^9}, {3.509816005464226*^9, 3.509816017826168*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{
+  "\"\</home/xcolwell/what_we_pay_for.wdx\>\"", ",", "allYearData", ",", 
+   "\"\<WDX\>\""}], "]"}]], "Input",
+ CellChangeTimes->{{3.509815550642408*^9, 3.50981556798953*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"allYearData", "=", 
+   RowBox[{
+   "Import", "[", "\"\</home/xcolwell/what_we_pay_for.wdx\>\"", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.509915202778503*^9, 3.5099152115664473`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"INDEXOFFSET", "=", "1"}], ";"}]], "Input",
+ CellChangeTimes->{{3.5098206864824467`*^9, 3.509820694119665*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"yearSummaries", "=", 
+   RowBox[{
+    RowBox[{"Function", "[", 
+     RowBox[{
+      RowBox[{"{", "index", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"years", "[", 
+         RowBox[{"[", "index", "]"}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Amount", "[", 
+         RowBox[{"Total", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Abs", "[", "#", "]"}], "&"}], "/@", 
+           RowBox[{"allYearData", "[", 
+            RowBox[{"[", 
+             RowBox[{"index", ",", "2", ",", "All", ",", "2"}], "]"}], 
+            "]"}]}], "]"}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Length", "[", 
+         RowBox[{"allYearData", "[", 
+          RowBox[{"[", 
+           RowBox[{"index", ",", "2"}], "]"}], "]"}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Length", "[", 
+         RowBox[{"allYearData", "[", 
+          RowBox[{"[", 
+           RowBox[{"index", ",", "3"}], "]"}], "]"}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Amount", "[", 
+         RowBox[{"Min", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Total", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Abs", "[", "#", "]"}], "&"}], "/@", 
+              RowBox[{
+               RowBox[{"allYearData", "[", 
+                RowBox[{"[", 
+                 RowBox[{"index", ",", "2", ",", 
+                  RowBox[{"#", "[", 
+                   RowBox[{"[", "2", "]"}], "]"}]}], "]"}], "]"}], "[", 
+               RowBox[{"[", 
+                RowBox[{"All", ",", "2"}], "]"}], "]"}]}], "]"}], "&"}], "/@", 
+           RowBox[{"allYearData", "[", 
+            RowBox[{"[", 
+             RowBox[{"index", ",", "3"}], "]"}], "]"}]}], 
+          "\[IndentingNewLine]", "]"}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Amount", "[", 
+         RowBox[{"Max", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Total", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Abs", "[", "#", "]"}], "&"}], "/@", 
+              RowBox[{
+               RowBox[{"allYearData", "[", 
+                RowBox[{"[", 
+                 RowBox[{"index", ",", "2", ",", 
+                  RowBox[{"#", "[", 
+                   RowBox[{"[", "2", "]"}], "]"}]}], "]"}], "]"}], "[", 
+               RowBox[{"[", 
+                RowBox[{"All", ",", "2"}], "]"}], "]"}]}], "]"}], "&"}], "/@", 
+           RowBox[{"allYearData", "[", 
+            RowBox[{"[", 
+             RowBox[{"index", ",", "3"}], "]"}], "]"}]}], 
+          "\[IndentingNewLine]", "]"}], "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Min", "[", 
+         RowBox[{"Length", "/@", 
+          RowBox[{"allYearData", "[", 
+           RowBox[{"[", 
+            RowBox[{"index", ",", "3", ",", "All", ",", "2"}], "]"}], "]"}]}],
+          "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Max", "[", 
+         RowBox[{"Length", "/@", 
+          RowBox[{"allYearData", "[", 
+           RowBox[{"[", 
+            RowBox[{"index", ",", "3", ",", "All", ",", "2"}], "]"}], "]"}]}],
+          "]"}]}], "\[IndentingNewLine]", "}"}]}], "\[IndentingNewLine]", 
+     "]"}], "/@", 
+    RowBox[{"Range", "[", 
+     RowBox[{"1", ",", 
+      RowBox[{"Length", "[", "years", "]"}]}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"yearSummaries", "[", 
+  RowBox[{"[", 
+   RowBox[{"-", "1"}], "]"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.509816020244128*^9, 3.50981610381144*^9}, {
+   3.509816262248598*^9, 3.509816288776932*^9}, {3.509816327163718*^9, 
+   3.509816353377574*^9}, {3.509816388278159*^9, 3.509816390402678*^9}, {
+   3.5098165108586407`*^9, 3.509816511563114*^9}, {3.50981658371106*^9, 
+   3.509816586770853*^9}, {3.509816618058745*^9, 3.509816869425799*^9}, {
+   3.509816933787013*^9, 3.509816934415951*^9}, {3.509816967715938*^9, 
+   3.50981697145839*^9}, {3.509817001649062*^9, 3.5098170228129787`*^9}, {
+   3.509817064782152*^9, 3.5098170915662527`*^9}, 3.509817140975422*^9, {
+   3.509818233488244*^9, 3.509818233792324*^9}, {3.509915087814767*^9, 
+   3.509915105317371*^9}, {3.509915318041416*^9, 3.509915328423131*^9}, {
+   3.5099159295971937`*^9, 3.509915963612267*^9}, {3.509916476239826*^9, 
+   3.5099164763152447`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+  "2010", ",", "5815599000", ",", "1997", ",", "1301", ",", "0", ",", 
+   "2885014000", ",", "1", ",", "566"}], "}"}]], "Output",
+ CellChangeTimes->{3.509915255851554*^9, 3.509915338193842*^9, 
+  3.509915966741735*^9, 3.509916477847946*^9, 3.510190920427373*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"functionSummaries", "=", 
+   RowBox[{
+    RowBox[{"Function", "[", 
+     RowBox[{
+      RowBox[{"{", "function", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{"function", ",", "\[IndentingNewLine]", 
+        RowBox[{"Amount", "[", 
+         RowBox[{"Total", "[", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{
+            RowBox[{"Function", "[", 
+             RowBox[{
+              RowBox[{"{", "index", "}"}], ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Max", "[", 
+                 RowBox[{"0", ",", "#"}], "]"}], "&"}], "/@", 
+               RowBox[{
+                RowBox[{"Select", "[", 
+                 RowBox[{
+                  RowBox[{"allYearData", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"index", ",", "2"}], "]"}], "]"}], ",", 
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{"function", "\[Equal]", 
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "3", "]"}], "]"}]}], ")"}], "&"}]}], "]"}], 
+                "[", 
+                RowBox[{"[", 
+                 RowBox[{"All", ",", "2"}], "]"}], "]"}]}]}], 
+             "\[IndentingNewLine]", "]"}], "/@", 
+            RowBox[{"Range", "[", 
+             RowBox[{"1", ",", 
+              RowBox[{"Length", "[", "years", "]"}]}], "]"}]}], "]"}], "]"}], 
+         "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Total", "[", 
+         RowBox[{
+          RowBox[{"Function", "[", 
+           RowBox[{
+            RowBox[{"{", "index", "}"}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Length", "[", 
+             RowBox[{"Select", "[", 
+              RowBox[{
+               RowBox[{"allYearData", "[", 
+                RowBox[{"[", 
+                 RowBox[{"index", ",", "2"}], "]"}], "]"}], ",", 
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"function", "\[Equal]", 
+                  RowBox[{"#", "[", 
+                   RowBox[{"[", "3", "]"}], "]"}]}], ")"}], "&"}]}], "]"}], 
+             "]"}]}], "\[IndentingNewLine]", "]"}], "/@", 
+          RowBox[{"Range", "[", 
+           RowBox[{"1", ",", 
+            RowBox[{"Length", "[", "years", "]"}]}], "]"}]}], "]"}]}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Select", "[", 
+          RowBox[{
+           RowBox[{"Range", "[", 
+            RowBox[{"1", ",", 
+             RowBox[{"Length", "[", "years", "]"}]}], "]"}], ",", 
+           RowBox[{
+            RowBox[{"MemberQ", "[", 
+             RowBox[{
+              RowBox[{"allYearData", "[", 
+               RowBox[{"[", 
+                RowBox[{"#", ",", "2", ",", "All", ",", "3"}], "]"}], "]"}], 
+              ",", "function"}], "]"}], "&"}]}], "]"}], "-", "INDEXOFFSET"}], 
+        "\[IndentingNewLine]", "*)"}], "\[IndentingNewLine]", "}"}]}], 
+     "\[IndentingNewLine]", "]"}], "/@", 
+    RowBox[{"Union", "[", 
+     RowBox[{"Flatten", "[", 
+      RowBox[{"allYearData", "[", 
+       RowBox[{"[", 
+        RowBox[{"All", ",", "2", ",", "All", ",", "3"}], "]"}], "]"}], "]"}], 
+     "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"functionSummaries", "[", 
+  RowBox[{"[", 
+   RowBox[{"1", ";;", "5"}], "]"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.509818894259276*^9, 3.509818939344057*^9}, {
+  3.509819803323317*^9, 3.509819818150819*^9}, {3.509819874765074*^9, 
+  3.5098199630785503`*^9}, {3.509820001670615*^9, 3.509820023661036*^9}, {
+  3.509820590362369*^9, 3.509820590463662*^9}, {3.5098206679397993`*^9, 
+  3.509820699633533*^9}, {3.509830453723023*^9, 3.5098304572465153`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"\<\"Administration of Justice\"\>", ",", "785111314", ",", 
+     "2751"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"Agriculture\"\>", ",", "607842089", ",", "1669"}], "}"}], 
+   ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"Allowances\"\>", ",", "60500000", ",", "3"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"Commerce and Housing Credit\"\>", ",", "1381792830", ",", 
+     "2140"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"Community and Regional Development\"\>", ",", "504440590", 
+     ",", "2186"}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{3.510190924041407*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"accountSummaries", "=", 
+   RowBox[{
+    RowBox[{"Function", "[", 
+     RowBox[{
+      RowBox[{"{", "account", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{"account", ",", "\[IndentingNewLine]", 
+        RowBox[{"Amount", "[", 
+         RowBox[{"Total", "[", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{
+            RowBox[{"Function", "[", 
+             RowBox[{
+              RowBox[{"{", "index", "}"}], ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Max", "[", 
+                 RowBox[{"0", ",", "#"}], "]"}], "&"}], "/@", 
+               RowBox[{
+                RowBox[{"Select", "[", 
+                 RowBox[{
+                  RowBox[{"allYearData", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"index", ",", "2"}], "]"}], "]"}], ",", 
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{"account", "\[Equal]", 
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], ")"}], "&"}]}], "]"}], 
+                "[", 
+                RowBox[{"[", 
+                 RowBox[{"All", ",", "2"}], "]"}], "]"}]}]}], 
+             "\[IndentingNewLine]", "]"}], "/@", 
+            RowBox[{"Range", "[", 
+             RowBox[{"1", ",", 
+              RowBox[{"Length", "[", "years", "]"}]}], "]"}]}], "]"}], "]"}], 
+         "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"(*", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Select", "[", 
+            RowBox[{
+             RowBox[{"Range", "[", 
+              RowBox[{"1", ",", 
+               RowBox[{"Length", "[", "years", "]"}]}], "]"}], ",", 
+             RowBox[{
+              RowBox[{"MemberQ", "[", 
+               RowBox[{
+                RowBox[{"allYearData", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"#", ",", "2", ",", "All", ",", "1"}], "]"}], "]"}],
+                 ",", "account"}], "]"}], "&"}]}], "]"}], "-", 
+           "INDEXOFFSET"}], ","}], "\[IndentingNewLine]", "*)"}], 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Flatten", "[", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Position", "[", 
+             RowBox[{
+              RowBox[{"functionSummaries", "[", 
+               RowBox[{"[", 
+                RowBox[{"All", ",", "1"}], "]"}], "]"}], ",", "#"}], "]"}], 
+            "&"}], "/@", 
+           RowBox[{"Union", "[", 
+            RowBox[{
+             RowBox[{"Select", "[", 
+              RowBox[{
+               RowBox[{"Flatten", "[", 
+                RowBox[{
+                 RowBox[{"allYearData", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"All", ",", "2"}], "]"}], "]"}], ",", "1"}], "]"}],
+                ",", 
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"account", "\[Equal]", 
+                  RowBox[{"#", "[", 
+                   RowBox[{"[", "1", "]"}], "]"}]}], ")"}], "&"}]}], "]"}], 
+             "[", 
+             RowBox[{"[", 
+              RowBox[{"All", ",", "3"}], "]"}], "]"}], "]"}]}], 
+          "\[IndentingNewLine]", "]"}], "-", "INDEXOFFSET"}]}], 
+       "\[IndentingNewLine]", "}"}]}], "\[IndentingNewLine]", "]"}], "/@", 
+    RowBox[{"Union", "[", 
+     RowBox[{"Flatten", "[", 
+      RowBox[{"allYearData", "[", 
+       RowBox[{"[", 
+        RowBox[{"All", ",", "2", ",", "All", ",", "1"}], "]"}], "]"}], "]"}], 
+     "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"accountSummaries", "[", 
+  RowBox[{"[", 
+   RowBox[{"1", ";;", "5"}], "]"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.509818157031582*^9, 3.509818246038457*^9}, {
+  3.509818707837069*^9, 3.509818724573069*^9}, {3.509818771724102*^9, 
+  3.5098188915522623`*^9}, {3.509819261955636*^9, 3.509819298150935*^9}, {
+  3.509819462399377*^9, 3.509819489564419*^9}, {3.509819994311191*^9, 
+  3.5098199979826527`*^9}, {3.509820078870823*^9, 3.5098200801409388`*^9}, {
+  3.509820123890172*^9, 3.5098201249496727`*^9}, {3.509820602642057*^9, 
+  3.509820605239153*^9}, {3.509820663166315*^9, 3.509820665561943*^9}, {
+  3.509820709262603*^9, 3.509820711990353*^9}, {3.5098304674334593`*^9, 
+  3.509830471424214*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"\<\"1995 Special olympics world games\"\>", ",", "3000", ",", 
+     RowBox[{"{", "13", "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"Abandoned Mine Reclamation Fund\"\>", ",", "6427473", ",", 
+     RowBox[{"{", 
+      RowBox[{"9", ",", "14"}], "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"Abatement, control, and compliance direct loan liquidating \
+account\"\>", ",", "56439", ",", 
+     RowBox[{"{", "14", "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"Abatement, Control, and Compliance Loan Program Account\"\>",
+      ",", "55625", ",", 
+     RowBox[{"{", "14", "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"Academic Competitiveness/SMART Grant Program\"\>", ",", 
+     "3444000", ",", 
+     RowBox[{"{", "5", "}"}]}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{3.510191292922914*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"wordSummaries", "=", 
+   RowBox[{
+    RowBox[{"Function", "[", 
+     RowBox[{
+      RowBox[{"{", "word", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{"word", ",", "\[IndentingNewLine]", 
+        RowBox[{"Amount", "[", 
+         RowBox[{"Total", "[", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{
+            RowBox[{"Function", "[", 
+             RowBox[{
+              RowBox[{"{", "index", "}"}], ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Total", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Max", "[", 
+                    RowBox[{"0", ",", "#"}], "]"}], "&"}], "/@", 
+                  RowBox[{
+                   RowBox[{"allYearData", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"index", ",", "2", ",", 
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}], "]"}], "]"}], "[", 
+                   RowBox[{"[", 
+                    RowBox[{"All", ",", "2"}], "]"}], "]"}]}], "]"}], "&"}], "/@", 
+               RowBox[{"Select", "[", 
+                RowBox[{
+                 RowBox[{"allYearData", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"index", ",", "3"}], "]"}], "]"}], ",", 
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"word", "\[Equal]", 
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], ")"}], "&"}]}], 
+                "]"}]}]}], "\[IndentingNewLine]", "]"}], "/@", 
+            RowBox[{"Range", "[", 
+             RowBox[{"1", ",", 
+              RowBox[{"Length", "[", "years", "]"}]}], "]"}]}], "]"}], "]"}], 
+         "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"Total", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Length", "[", 
+            RowBox[{"#", "[", 
+             RowBox[{"[", "2", "]"}], "]"}], "]"}], "&"}], "/@", 
+          RowBox[{"Select", "[", 
+           RowBox[{
+            RowBox[{"Flatten", "[", 
+             RowBox[{
+              RowBox[{"allYearData", "[", 
+               RowBox[{"[", 
+                RowBox[{"All", ",", "3"}], "]"}], "]"}], ",", "1"}], "]"}], 
+            ",", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"word", "\[Equal]", 
+               RowBox[{"#", "[", 
+                RowBox[{"[", "1", "]"}], "]"}]}], ")"}], "&"}]}], "]"}]}], 
+         "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{"Length", "[", 
+           RowBox[{"Union", "[", 
+            RowBox[{"Flatten", "[", 
+             RowBox[{
+              RowBox[{"Select", "[", 
+               RowBox[{
+                RowBox[{"Flatten", "[", 
+                 RowBox[{
+                  RowBox[{"allYearData", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"All", ",", "3"}], "]"}], "]"}], ",", "1"}], 
+                 "]"}], ",", 
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{"word", "\[Equal]", 
+                   RowBox[{"#", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], ")"}], "&"}]}], "]"}], 
+              "[", 
+              RowBox[{"[", 
+               RowBox[{"All", ",", "2"}], "]"}], "]"}], "]"}], "]"}], "]"}], 
+          ","}], "*)"}], "\[IndentingNewLine]", 
+        RowBox[{"(*", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Select", "[", 
+            RowBox[{
+             RowBox[{"Range", "[", 
+              RowBox[{"1", ",", 
+               RowBox[{"Length", "[", "years", "]"}]}], "]"}], ",", 
+             RowBox[{
+              RowBox[{"MemberQ", "[", 
+               RowBox[{
+                RowBox[{"allYearData", "[", 
+                 RowBox[{"[", 
+                  RowBox[{"#", ",", "3", ",", "All", ",", "1"}], "]"}], "]"}],
+                 ",", "word"}], "]"}], "&"}]}], "]"}], "-", "INDEXOFFSET"}], 
+          ","}], "\[IndentingNewLine]", "*)"}], "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Union", "[", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{
+            RowBox[{"Function", "[", 
+             RowBox[{
+              RowBox[{"{", "index", "}"}], ",", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Position", "[", 
+                    RowBox[{
+                    RowBox[{"accountSummaries", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"All", ",", "1"}], "]"}], "]"}], ",", "#"}], 
+                    "]"}], "&"}], "/@", 
+                  RowBox[{
+                   RowBox[{"allYearData", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"index", ",", "2", ",", 
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}], "]"}], "]"}], "[", 
+                   RowBox[{"[", 
+                    RowBox[{"All", ",", "1"}], "]"}], "]"}]}], ")"}], "&"}], "/@", 
+               RowBox[{"Select", "[", 
+                RowBox[{
+                 RowBox[{"allYearData", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"index", ",", "3"}], "]"}], "]"}], ",", 
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"word", "\[Equal]", 
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], ")"}], "&"}]}], 
+                "]"}]}]}], "\[IndentingNewLine]", "]"}], "/@", 
+            RowBox[{"Range", "[", 
+             RowBox[{"1", ",", 
+              RowBox[{"Length", "[", "years", "]"}]}], "]"}]}], "]"}], "]"}], 
+         "-", "INDEXOFFSET"}]}], "\[IndentingNewLine]", 
+       RowBox[{"(*", "\[IndentingNewLine]", 
+        RowBox[{"Union", "[", 
+         RowBox[{"Flatten", "[", 
+          RowBox[{
+           RowBox[{"Select", "[", 
+            RowBox[{
+             RowBox[{"Flatten", "[", 
+              RowBox[{
+               RowBox[{"allYearData", "[", 
+                RowBox[{"[", 
+                 RowBox[{"All", ",", "3"}], "]"}], "]"}], ",", "1"}], "]"}], 
+             ",", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"word", "\[Equal]", 
+                RowBox[{"#", "[", 
+                 RowBox[{"[", "1", "]"}], "]"}]}], ")"}], "&"}]}], "]"}], "[", 
+           RowBox[{"[", 
+            RowBox[{"All", ",", "2"}], "]"}], "]"}], "]"}], "]"}], 
+        "\[IndentingNewLine]", "*)"}], "\[IndentingNewLine]", "}"}]}], 
+     "\[IndentingNewLine]", "]"}], "/@", 
+    RowBox[{"Union", "[", 
+     RowBox[{"Flatten", "[", 
+      RowBox[{"allYearData", "[", 
+       RowBox[{"[", 
+        RowBox[{"All", ",", "3", ",", "All", ",", "1"}], "]"}], "]"}], "]"}], 
+     "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"wordSummaries", "[", 
+  RowBox[{"[", 
+   RowBox[{"1", ";;", "5"}], "]"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.509817150171453*^9, 3.509817157796135*^9}, {
+   3.5098171920223293`*^9, 3.509817282766223*^9}, {3.509817342185025*^9, 
+   3.509817368397443*^9}, {3.509817402187459*^9, 3.5098174027196617`*^9}, {
+   3.5098174590846357`*^9, 3.509817528809916*^9}, {3.50981760638028*^9, 
+   3.509817886656844*^9}, {3.509817925221387*^9, 3.509817930770296*^9}, {
+   3.509818210082439*^9, 3.509818237107996*^9}, {3.509818287411914*^9, 
+   3.509818290092328*^9}, {3.509818321612883*^9, 3.509818399296191*^9}, {
+   3.509818584613203*^9, 3.509818648690413*^9}, {3.509818984029462*^9, 
+   3.50981898412624*^9}, {3.50981902820642*^9, 3.509819178781488*^9}, {
+   3.509819430059057*^9, 3.5098194356168528`*^9}, {3.509819623073626*^9, 
+   3.5098196237782784`*^9}, {3.509820061586553*^9, 3.509820071166507*^9}, {
+   3.5098201317715807`*^9, 3.50982013346332*^9}, {3.5098206143422003`*^9, 
+   3.509820617634557*^9}, {3.509820651575927*^9, 3.509820660315995*^9}, {
+   3.5098207211240873`*^9, 3.5098207237092876`*^9}, 3.509820852540473*^9, {
+   3.5098304760958652`*^9, 3.509830478450523*^9}, {3.510202310809853*^9, 
+   3.5102023305035353`*^9}, {3.510204772630838*^9, 3.5102047789576073`*^9}, {
+   3.510205259595067*^9, 3.51020526576119*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"\<\"1\"\>", ",", "0", ",", "11", ",", 
+     RowBox[{"{", "2432", "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"102\"\>", ",", "42329", ",", "2", ",", 
+     RowBox[{"{", "2037", "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"11th\"\>", ",", "9138000", ",", "5", ",", 
+     RowBox[{"{", "2475", "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"16\"\>", ",", "3", ",", "2", ",", 
+     RowBox[{"{", "2236", "}"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"\<\"17\"\>", ",", "3953000", ",", "2", ",", 
+     RowBox[{"{", "2604", "}"}]}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{3.5101916594746723`*^9, 3.510203994491479*^9, 
+  3.510205058677305*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\</home/xcolwell/words.txt\>\"", ",", 
+   RowBox[{"wordSummaries", "[", 
+    RowBox[{"[", 
+     RowBox[{"All", ",", "1"}], "]"}], "]"}], ",", "\"\<Text\>\""}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.509820346530654*^9, 3.5098203644964542`*^9}, {
+  3.509820774051248*^9, 3.509820777737214*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"yearDetails", "=", 
+   RowBox[{
+    RowBox[{"Function", "[", 
+     RowBox[{
+      RowBox[{"{", "index", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Function", "[", 
+        RowBox[{
+         RowBox[{"{", "word", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"Amount", "[", 
+            RowBox[{"Total", "[", 
+             RowBox[{"Flatten", "[", "\[IndentingNewLine]", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Total", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"Max", "[", 
+                    RowBox[{"0", ",", "#"}], "]"}], "&"}], "/@", 
+                  RowBox[{
+                   RowBox[{"allYearData", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"index", ",", "2", ",", 
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}], "]"}], "]"}], "[", 
+                   RowBox[{"[", 
+                    RowBox[{"All", ",", "2"}], "]"}], "]"}]}], "]"}], "&"}], "/@", 
+               RowBox[{"Select", "[", 
+                RowBox[{
+                 RowBox[{"allYearData", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"index", ",", "3"}], "]"}], "]"}], ",", 
+                 RowBox[{
+                  RowBox[{"(", 
+                   RowBox[{"word", "\[Equal]", 
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], ")"}], "&"}]}], "]"}]}],
+               "\[IndentingNewLine]", "]"}], "]"}], "]"}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"Total", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Length", "[", 
+               RowBox[{"#", "[", 
+                RowBox[{"[", "2", "]"}], "]"}], "]"}], "&"}], "/@", 
+             RowBox[{"Select", "[", 
+              RowBox[{
+               RowBox[{"allYearData", "[", 
+                RowBox[{"[", 
+                 RowBox[{"index", ",", "3"}], "]"}], "]"}], ",", 
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"word", "\[Equal]", 
+                  RowBox[{"#", "[", 
+                   RowBox[{"[", "1", "]"}], "]"}]}], ")"}], "&"}]}], "]"}]}], 
+            "]"}], ",", "\[IndentingNewLine]", 
+           RowBox[{"Join", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"{", "JSMAP", "}"}], ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Function", "[", 
+               RowBox[{
+                RowBox[{"{", "accountInYear", "}"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{"Position", "[", 
+                    RowBox[{
+                    RowBox[{"accountSummaries", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"All", ",", "1"}], "]"}], "]"}], ",", 
+                    RowBox[{"accountInYear", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], "]"}], "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", "1"}], "]"}], "]"}], "-", 
+                   "INDEXOFFSET"}], ")"}], "\[Rule]", " ", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"(*", " ", 
+                  RowBox[{"Max", "[", 
+                   RowBox[{"0", ",", 
+                    RowBox[{"accountInYear", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}], "]"}], " ", "*)"}], 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"accountInYear", "[", 
+                  RowBox[{"[", "2", "]"}], "]"}]}]}], "\[IndentingNewLine]", 
+               "]"}], "/@", 
+              RowBox[{"allYearData", "[", 
+               RowBox[{"[", 
+                RowBox[{"index", ",", "2", ",", 
+                 RowBox[{"Flatten", "[", 
+                  RowBox[{
+                   RowBox[{"Select", "[", 
+                    RowBox[{
+                    RowBox[{"allYearData", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"index", ",", "3"}], "]"}], "]"}], ",", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"word", "\[Equal]", 
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], ")"}], "&"}]}], "]"}], 
+                   "[", 
+                   RowBox[{"[", 
+                    RowBox[{"All", ",", "2"}], "]"}], "]"}], "]"}]}], "]"}], 
+               "]"}]}], ",", "\[IndentingNewLine]", 
+             RowBox[{"{", "JSMAP", "}"}]}], "\[IndentingNewLine]", "]"}], ",",
+            "\[IndentingNewLine]", 
+           RowBox[{"Flatten", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"Amount", "[", 
+                 RowBox[{"#", "[", 
+                  RowBox[{"[", "1", "]"}], "]"}], "]"}], ",", 
+                RowBox[{"#", "[", 
+                 RowBox[{"[", "2", "]"}], "]"}]}], "}"}], "&"}], "/@", 
+             RowBox[{
+              RowBox[{"Function", "[", 
+               RowBox[{
+                RowBox[{"{", "functionIndex", "}"}], ",", 
+                "\[IndentingNewLine]", 
+                RowBox[{"Total", "[", "\[IndentingNewLine]", 
+                 RowBox[{"Join", "[", 
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"{", 
+                    RowBox[{"0", ",", "0"}], "}"}], "}"}], ",", 
+                   RowBox[{
+                    RowBox[{"Function", "[", 
+                    RowBox[{
+                    RowBox[{"{", "accountInYear", "}"}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Max", "[", 
+                    RowBox[{"0", ",", 
+                    RowBox[{"accountInYear", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}]}], "]"}], ",", "1"}], 
+                    "}"}]}], "\[IndentingNewLine]", "]"}], "/@", 
+                    RowBox[{"Select", "[", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"allYearData", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"index", ",", "2", ",", 
+                    RowBox[{"Flatten", "[", 
+                    RowBox[{
+                    RowBox[{"Select", "[", 
+                    RowBox[{
+                    RowBox[{"allYearData", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"index", ",", "3"}], "]"}], "]"}], ",", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{"word", "\[Equal]", 
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], ")"}], "&"}]}], "]"}], 
+                    "[", 
+                    RowBox[{"[", 
+                    RowBox[{"All", ",", "2"}], "]"}], "]"}], "]"}]}], "]"}], 
+                    "]"}], ",", "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"#", "[", 
+                    RowBox[{"[", "3", "]"}], "]"}], "\[Equal]", 
+                    RowBox[{"functionSummaries", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"functionIndex", ",", "1"}], "]"}], "]"}]}], 
+                    ")"}], "&"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+                  "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", 
+                 "]"}]}], "\[IndentingNewLine]", "]"}], "/@", 
+              RowBox[{"Range", "[", 
+               RowBox[{"1", ",", 
+                RowBox[{"Length", "[", "functionSummaries", "]"}]}], 
+               "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+          "\[IndentingNewLine]", "}"}]}], "\[IndentingNewLine]", "]"}], "/@", 
+       
+       RowBox[{"wordSummaries", "[", 
+        RowBox[{"[", 
+         RowBox[{"All", ",", "1"}], "]"}], "]"}]}]}], "\[IndentingNewLine]", 
+     "]"}], "/@", 
+    RowBox[{"Range", "[", 
+     RowBox[{"1", ",", 
+      RowBox[{"Length", "[", "years", "]"}]}], "]"}]}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.509819332029759*^9, 3.509819356946714*^9}, {
+   3.509821004991062*^9, 3.509821232269731*^9}, {3.5098212771208878`*^9, 
+   3.509821376969899*^9}, {3.509821407419582*^9, 3.509821408294742*^9}, {
+   3.509821449939036*^9, 3.509821469457735*^9}, {3.509821587040859*^9, 
+   3.509821589523747*^9}, {3.509821652962591*^9, 3.5098216634149714`*^9}, {
+   3.50982172427804*^9, 3.509821736256*^9}, {3.509821841172968*^9, 
+   3.50982196404434*^9}, {3.509821999227512*^9, 3.5098220464041853`*^9}, {
+   3.509822136430049*^9, 3.509822163584539*^9}, {3.50982220209758*^9, 
+   3.509822205260947*^9}, {3.5098222855262213`*^9, 3.50982228577559*^9}, {
+   3.5098223241659193`*^9, 3.5098223389971867`*^9}, {3.5098225787599983`*^9, 
+   3.5098226133602552`*^9}, {3.50982266466112*^9, 3.509822699632258*^9}, {
+   3.5098228492726707`*^9, 3.5098228691089067`*^9}, {3.5098231012717133`*^9, 
+   3.509823106385594*^9}, 3.509823773684063*^9, {3.509824254906789*^9, 
+   3.509824255135619*^9}, {3.5098248659941807`*^9, 3.509824867920216*^9}, {
+   3.509830490713667*^9, 3.50983049113302*^9}, {3.509831257833599*^9, 
+   3.509831264170285*^9}, {3.5102022478039637`*^9, 3.510202265071815*^9}, {
+   3.510204760354165*^9, 3.510204766583374*^9}, {3.510205281566533*^9, 
+   3.510205298284616*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\</home/xcolwell/derived.wdx\>\"", ",", 
+   RowBox[{"{", "\[IndentingNewLine]", 
+    RowBox[{
+    "yearSummaries", ",", "\[IndentingNewLine]", "functionSummaries", ",", 
+     "\[IndentingNewLine]", "accountSummaries", ",", "\[IndentingNewLine]", 
+     "wordSummaries", ",", "\[IndentingNewLine]", "yearDetails"}], 
+    "\[IndentingNewLine]", "}"}], ",", "\"\<WDX\>\""}], "]"}]], "Input",
+ CellChangeTimes->{{3.509830097586136*^9, 3.5098301003529053`*^9}}],
+
+Cell[BoxData["\<\"/home/xcolwell/derived.wdx\"\>"], "Output",
+ CellChangeTimes->{3.510193602000443*^9, 3.5102047129487963`*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "yearSummaries", ",", "\[IndentingNewLine]", "functionSummaries", ",", 
+     "\[IndentingNewLine]", "accountSummaries", ",", "\[IndentingNewLine]", 
+     "wordSummaries", ",", "\[IndentingNewLine]", "yearDetails"}], "}"}], "=", 
+   RowBox[{"Import", "[", "\"\</home/xcolwell/derived.wdx\>\"", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.509898650673057*^9, 3.509898660353327*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"yearOrder", "=", 
+   RowBox[{
+    RowBox[{"Function", "[", 
+     RowBox[{
+      RowBox[{"{", "index", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"SortBy", "[", 
+          RowBox[{
+           RowBox[{"Range", "[", 
+            RowBox[{"1", ",", 
+             RowBox[{"Length", "[", "wordSummaries", "]"}]}], "]"}], ",", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"-", 
+               RowBox[{"yearDetails", "[", 
+                RowBox[{"[", 
+                 RowBox[{"index", ",", "#", ",", "1"}], "]"}], "]"}]}], ",", 
+              RowBox[{"wordSummaries", "[", 
+               RowBox[{"[", 
+                RowBox[{"#", ",", "1"}], "]"}], "]"}]}], "}"}], "&"}]}], 
+          "]"}], "-", "INDEXOFFSET"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"SortBy", "[", 
+          RowBox[{
+           RowBox[{"Range", "[", 
+            RowBox[{"1", ",", 
+             RowBox[{"Length", "[", "wordSummaries", "]"}]}], "]"}], ",", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"-", 
+               RowBox[{"yearDetails", "[", 
+                RowBox[{"[", 
+                 RowBox[{"index", ",", "#", ",", "2"}], "]"}], "]"}]}], ",", 
+              RowBox[{"wordSummaries", "[", 
+               RowBox[{"[", 
+                RowBox[{"#", ",", "1"}], "]"}], "]"}]}], "}"}], "&"}]}], 
+          "]"}], "-", "INDEXOFFSET"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"WordIndexesByFunctionAmount", "[", "index", "]"}], "-", 
+         "INDEXOFFSET"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"WordIndexesByFunctionAccounts", "[", "index", "]"}], "-", 
+         "INDEXOFFSET"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"SortBy", "[", 
+          RowBox[{
+           RowBox[{"Range", "[", 
+            RowBox[{"1", ",", 
+             RowBox[{"Length", "[", "wordSummaries", "]"}]}], "]"}], ",", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"wordSummaries", "[", 
+              RowBox[{"[", 
+               RowBox[{"#", ",", "1"}], "]"}], "]"}], "}"}], "&"}]}], "]"}], 
+         "-", "INDEXOFFSET"}]}], "\[IndentingNewLine]", "}"}]}], 
+     "\[IndentingNewLine]", "]"}], "/@", 
+    RowBox[{"Range", "[", 
+     RowBox[{"1", ",", 
+      RowBox[{"Length", "[", "years", "]"}]}], "]"}]}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.509823816179947*^9, 3.5098238995332127`*^9}, {
+  3.509824144453315*^9, 3.509824249160048*^9}, {3.510080542264634*^9, 
+  3.510080588431561*^9}, {3.5100806298992147`*^9, 3.510080630109478*^9}, {
+  3.510172087919416*^9, 3.5101720908227177`*^9}, {3.5101722421654177`*^9, 
+  3.510172244432591*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"yearOrderInverse", "=", 
+   RowBox[{
+    RowBox[{"Function", "[", 
+     RowBox[{
+      RowBox[{"{", "orders", "}"}], ",", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"InverseIndexes", "[", 
+           RowBox[{"#", "+", "INDEXOFFSET"}], "]"}], "-", "INDEXOFFSET"}], 
+         ")"}], "&"}], "/@", "orders"}]}], "]"}], "/@", "yearOrder"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.510172447970251*^9, 3.510172482077326*^9}, {
+  3.510172563997315*^9, 3.510172566544092*^9}, {3.5101727683266163`*^9, 
+  3.5101727817299*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"yearOrder", "[", 
+  RowBox[{"[", 
+   RowBox[{"1", ",", "1", ",", "1"}], "]"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"yearOrderInverse", "[", 
+  RowBox[{"[", 
+   RowBox[{"1", ",", "1", ",", "756"}], "]"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.51017665414054*^9, 3.510176673156478*^9}}],
+
+Cell[BoxData["755"], "Output",
+ CellChangeTimes->{{3.510176659138451*^9, 3.510176673693337*^9}}],
+
+Cell[BoxData["0"], "Output",
+ CellChangeTimes->{{3.510176659138451*^9, 3.510176673699662*^9}}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"yearTrendOrder", "=", 
+   RowBox[{
+    RowBox[{"Function", "[", 
+     RowBox[{
+      RowBox[{"{", "index", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{"TODO", ":", " ", "trends"}], " ", "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Range", "[", 
+          RowBox[{"1", ",", 
+           RowBox[{"Length", "[", "wordSummaries", "]"}]}], "]"}], "-", 
+         "INDEXOFFSET"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Range", "[", 
+          RowBox[{"1", ",", 
+           RowBox[{"Length", "[", "wordSummaries", "]"}]}], "]"}], "-", 
+         "INDEXOFFSET"}]}], "\[IndentingNewLine]", "}"}]}], 
+     "\[IndentingNewLine]", "]"}], "/@", 
+    RowBox[{"Range", "[", 
+     RowBox[{"1", ",", 
+      RowBox[{"Length", "[", "years", "]"}]}], "]"}]}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5098242968238583`*^9, 3.5098243245619802`*^9}, {
+  3.5098243587203817`*^9, 3.5098243643591623`*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.50982490191642*^9, 3.509824941793404*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\</home/xcolwell/order.wdx\>\"", ",", 
+   RowBox[{"{", "\[IndentingNewLine]", 
+    RowBox[{"yearOrder", ",", "\[IndentingNewLine]", "yearOrderInverse"}], 
+    "\[IndentingNewLine]", "}"}], ",", "\"\<WDX\>\""}], "]"}]], "Input",
+ CellChangeTimes->{{3.509830107974039*^9, 3.5098301124004517`*^9}, {
+  3.510172801841302*^9, 3.510172808145933*^9}}],
+
+Cell[BoxData["\<\"/home/xcolwell/order.wdx\"\>"], "Output",
+ CellChangeTimes->{3.510172836442729*^9, 3.5101936663106403`*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"(*", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"[", 
+     RowBox[{"[", 
+      RowBox[{"year", ",", 
+       RowBox[{"total", " ", "amount"}], ",", 
+       RowBox[{"total", " ", "accounts"}], ",", 
+       RowBox[{"total", " ", "words"}], ",", 
+       RowBox[{"min", " ", "amount", " ", "per", " ", "word"}], ",", " ", 
+       RowBox[{"max", " ", "amount", " ", "per", " ", "word"}], ",", " ", 
+       RowBox[{"min", " ", "account", " ", "per", " ", "word"}], ",", " ", 
+       RowBox[{"max", " ", "account", " ", "per", " ", "word"}]}], "]"}], 
+     "]"}], "\n", "[", 
+    RowBox[{"[", 
+     RowBox[{"word", ",", 
+      RowBox[{"total", " ", "amount", " ", 
+       RowBox[{"(", 
+        RowBox[{"all", " ", "years"}], ")"}]}], ",", 
+      RowBox[{"total", " ", "accounts", " ", 
+       RowBox[{"(", 
+        RowBox[{"all", " ", "years"}], ")"}]}], ",", 
+      RowBox[{"[", 
+       RowBox[{"year", " ", "IDs"}], "]"}], ",", 
+      RowBox[{"[", 
+       RowBox[{"account", " ", "IDs"}], "]"}]}], "]"}], "]"}], "\n", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"[", 
+       RowBox[{"funtion", ",", 
+        RowBox[{"total", " ", "amount", " ", 
+         RowBox[{"(", 
+          RowBox[{"all", " ", "years"}], ")"}]}], ",", 
+        RowBox[{"total", " ", "accounts", " ", 
+         RowBox[{"(", 
+          RowBox[{"all", " ", "years"}], ")"}]}], ",", 
+        RowBox[{"[", 
+         RowBox[{"year", " ", "IDs"}], "]"}]}], "]"}], "\[IndentingNewLine]", 
+      "[", 
+      RowBox[{"[", 
+       RowBox[{"account", ",", 
+        RowBox[{"total", " ", "amount", " ", 
+         RowBox[{"(", 
+          RowBox[{"all", " ", "years"}], ")"}]}], ",", 
+        RowBox[{"[", 
+         RowBox[{"year", " ", "IDs"}], "]"}], ",", 
+        RowBox[{"[", 
+         RowBox[{"function", " ", "IDs"}], "]"}]}], "]"}], "]"}], 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", "year", " ", "details", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", "index", " ", "by", " ", 
+     "year"}], "=", 
+    RowBox[{"[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"index", " ", "by", " ", "word", " ", "id"}], "=", 
+      RowBox[{"[", 
+       RowBox[{
+        RowBox[{"total", " ", "amount"}], ",", 
+        RowBox[{"total", " ", "accounts"}], ",", 
+        RowBox[{
+         RowBox[{"index", " ", "by", " ", "account", " ", "id", 
+          RowBox[{"(", "sparse", ")"}]}], "=", 
+         RowBox[{"[", 
+          RowBox[{"[", 
+           RowBox[{"total", " ", "amount"}], "]"}], "]"}]}], ",", 
+        RowBox[{
+         RowBox[{"index", " ", "by", " ", "function", " ", "ID"}], "=", 
+         RowBox[{"[", 
+          RowBox[{"[", 
+           RowBox[{
+            RowBox[{"total", " ", "amount"}], ",", 
+            RowBox[{"total", " ", "accounts"}]}], "]"}], "]"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"min", " ", "amount", " ", "per", " ", "function"}], ",", " ", 
+        RowBox[{"max", " ", "amount", " ", "per", " ", "function"}], ",", " ", 
+        RowBox[{"min", " ", "accounts", " ", "per", " ", "function"}], ",", 
+        " ", 
+        RowBox[{"max", " ", "accounts", " ", "per", " ", "function"}]}], 
+       "]"}]}], "\[IndentingNewLine]"}]}]}], "*)"}]], "Input",
+ CellChangeTimes->{{3.509816030601582*^9, 3.509816033189105*^9}, {
+  3.509816463948558*^9, 3.509816507019518*^9}, {3.5098179198274612`*^9, 
+  3.509817920391314*^9}, {3.509818679806636*^9, 3.509818681970166*^9}, {
+  3.509819368747674*^9, 3.509819371626254*^9}, {3.5098209500252333`*^9, 
+  3.509820951040976*^9}, {3.509898851216344*^9, 3.509898852050941*^9}, {
+  3.509898893022464*^9, 3.5098989336740093`*^9}, {3.509915302738328*^9, 
+  3.5099153044332857`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"js", "=", 
+    RowBox[{"\"\<yearSummaries=\>\"", "<>", 
+     RowBox[{"Js", "[", 
+      RowBox[{"ToString", "[", 
+       RowBox[{"yearSummaries", ",", "InputForm"}], "]"}], "]"}], "<>", 
+     "\"\<;\\n\>\"", "<>", "\[IndentingNewLine]", 
+     "\"\<functionSummaries=\>\"", "<>", 
+     RowBox[{"Js", "[", 
+      RowBox[{"ToString", "[", 
+       RowBox[{"functionSummaries", ",", "InputForm"}], "]"}], "]"}], "<>", 
+     "\"\<;\\n\>\"", "<>", "\[IndentingNewLine]", "\"\<accountSummaries=\>\"",
+      "<>", 
+     RowBox[{"Js", "[", 
+      RowBox[{"ToString", "[", 
+       RowBox[{"accountSummaries", ",", "InputForm"}], "]"}], "]"}], "<>", 
+     "\"\<;\\n\>\"", "<>", "\[IndentingNewLine]", "\"\<wordSummaries=\>\"", "<>", 
+     RowBox[{"Js", "[", 
+      RowBox[{"ToString", "[", 
+       RowBox[{"wordSummaries", ",", "InputForm"}], "]"}], "]"}], "<>", 
+     "\"\<;\\n\>\"", "<>", "\[IndentingNewLine]", "\"\<yearDetails=\>\"", "<>", 
+     RowBox[{"Js", "[", 
+      RowBox[{"ToString", "[", 
+       RowBox[{"yearDetails", ",", "InputForm"}], "]"}], "]"}], "<>", 
+     "\"\<;\\n\>\"", "<>", "\[IndentingNewLine]", "\"\<yearOrder=\>\"", "<>", 
+     
+     RowBox[{"Js", "[", 
+      RowBox[{"ToString", "[", 
+       RowBox[{"yearOrder", ",", "InputForm"}], "]"}], "]"}], "<>", 
+     "\"\<;\\n\>\""}]}], ";"}], "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.509830137403442*^9, 3.5098303381688747`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"js", "=", 
+   RowBox[{"\"\<yearSummaries=\>\"", "<>", 
+    RowBox[{"Js", "[", 
+     RowBox[{"ToString", "[", 
+      RowBox[{"yearSummaries", ",", "InputForm"}], "]"}], "]"}], "<>", 
+    "\"\<;\\n\>\"", "<>", "\[IndentingNewLine]", "\"\<functionSummaries=\>\"",
+     "<>", 
+    RowBox[{"Js", "[", 
+     RowBox[{"ToString", "[", 
+      RowBox[{"functionSummaries", ",", "InputForm"}], "]"}], "]"}], "<>", 
+    "\"\<;\\n\>\"", "<>", "\[IndentingNewLine]", "\"\<accountSummaries=\>\"", 
+    "<>", 
+    RowBox[{"Js", "[", 
+     RowBox[{"ToString", "[", 
+      RowBox[{"accountSummaries", ",", "InputForm"}], "]"}], "]"}], "<>", 
+    "\"\<;\\n\>\"", "<>", "\[IndentingNewLine]", "\"\<wordSummaries=\>\"", "<>", 
+    RowBox[{"Js", "[", 
+     RowBox[{"ToString", "[", 
+      RowBox[{"wordSummaries", ",", "InputForm"}], "]"}], "]"}], "<>", 
+    "\"\<;\\n\>\"", "<>", "\[IndentingNewLine]", 
+    "\"\<yearDetails=new Array(\>\"", "<>", 
+    RowBox[{"ToString", "[", 
+     RowBox[{"Length", "[", "years", "]"}], "]"}], "<>", "\"\<);\\n\>\"", "<>",
+     "\[IndentingNewLine]", "\"\<yearOrder=new Array(\>\"", "<>", 
+    RowBox[{"ToString", "[", 
+     RowBox[{"Length", "[", "years", "]"}], "]"}], "<>", "\"\<);\\n\>\"", "<>",
+     "\[IndentingNewLine]", "\"\<yearOrderInverse=new Array(\>\"", "<>", 
+    RowBox[{"ToString", "[", 
+     RowBox[{"Length", "[", "years", "]"}], "]"}], "<>", "\"\<);\\n\>\""}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.5098987300682707`*^9, 3.509898732638625*^9}, {
+  3.5098987744325447`*^9, 3.5098988040388203`*^9}, {3.509899089547636*^9, 
+  3.5098991308698463`*^9}, {3.50989948620004*^9, 3.509899500338747*^9}, {
+  3.510172834403755*^9, 3.510172843255363*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{
+  "\"\</home/xcolwell/word_data.js\>\"", ",", "js", ",", "\"\<Text\>\""}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.509830341278171*^9, 3.509830355463949*^9}, {
+  3.5098990560635843`*^9, 3.5098990565751257`*^9}}],
+
+Cell[BoxData["\<\"/home/xcolwell/word_data.js\"\>"], "Output",
+ CellChangeTimes->{3.509899322462912*^9, 3.5098995171585827`*^9, 
+  3.509899628622109*^9, 3.509915286062312*^9, 3.509915349192711*^9, 
+  3.510172875614904*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"Block", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"i", ",", "yearOrderJs"}], "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"For", "[", 
+    RowBox[{
+     RowBox[{"i", "=", "1"}], ",", 
+     RowBox[{"i", "\[LessEqual]", 
+      RowBox[{"Length", "[", "years", "]"}]}], ",", 
+     RowBox[{"i", "+=", "1"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"yearOrderJs", "=", 
+       RowBox[{"\"\<yearOrder[\>\"", "<>", 
+        RowBox[{"ToString", "[", 
+         RowBox[{"i", "-", "1"}], "]"}], "<>", "\"\<]=\>\"", "<>", 
+        RowBox[{"Js", "[", 
+         RowBox[{"ToString", "[", 
+          RowBox[{
+           RowBox[{"yearOrder", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], ",", "InputForm"}], "]"}], "]"}], 
+        "<>", "\"\<;\\n\>\"", "<>", "\[IndentingNewLine]", 
+        "\"\<yearOrderInverse[\>\"", "<>", 
+        RowBox[{"ToString", "[", 
+         RowBox[{"i", "-", "1"}], "]"}], "<>", "\"\<]=\>\"", "<>", 
+        RowBox[{"Js", "[", 
+         RowBox[{"ToString", "[", 
+          RowBox[{
+           RowBox[{"yearOrderInverse", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], ",", "InputForm"}], "]"}], "]"}], 
+        "<>", "\"\<;\\n\>\""}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Export", "[", 
+       RowBox[{
+        RowBox[{"\"\</home/xcolwell/word_data_year_order_\>\"", "<>", 
+         RowBox[{"ToString", "[", 
+          RowBox[{"i", "-", "1"}], "]"}], "<>", "\"\<.js\>\""}], ",", 
+        "yearOrderJs", ",", "\"\<Text\>\""}], "]"}], ";"}]}], 
+    "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.509899213163443*^9, 3.509899217005301*^9}, 
+   3.5098994702037373`*^9, {3.5098995221438103`*^9, 3.50989954564044*^9}, 
+   3.509899578452836*^9, 3.509901607342318*^9, {3.510174046440338*^9, 
+   3.510174073169066*^9}, {3.510176686023385*^9, 3.510176691442485*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Block", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"i", ",", "yearOrderInverseJs"}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"For", "[", 
+    RowBox[{
+     RowBox[{"i", "=", "1"}], ",", 
+     RowBox[{"i", "\[LessEqual]", 
+      RowBox[{"Length", "[", "years", "]"}]}], ",", 
+     RowBox[{"i", "+=", "1"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"yearOrderInverseJs", "=", 
+       RowBox[{"\"\<yearOrderInverse[\>\"", "<>", 
+        RowBox[{"ToString", "[", 
+         RowBox[{"i", "-", "1"}], "]"}], "<>", "\"\<]=\>\"", "<>", 
+        RowBox[{"Js", "[", 
+         RowBox[{"ToString", "[", 
+          RowBox[{
+           RowBox[{"yearOrder", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], ",", "InputForm"}], "]"}], "]"}], 
+        "<>", "\"\<;\\n\>\""}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Export", "[", 
+       RowBox[{
+        RowBox[{
+        "\"\</home/xcolwell/word_data_year_order_inverse_\>\"", "<>", 
+         RowBox[{"ToString", "[", 
+          RowBox[{"i", "-", "1"}], "]"}], "<>", "\"\<.js\>\""}], ",", 
+        "yearOrderInverseJs", ",", "\"\<Text\>\""}], "]"}], ";"}]}], 
+    "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.510172820735179*^9, 3.510172825253265*^9}, {
+  3.510172881399417*^9, 3.510172889229931*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Block", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"i", ",", "yearDetailsJs"}], "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"For", "[", 
+    RowBox[{
+     RowBox[{"i", "=", "1"}], ",", 
+     RowBox[{"i", "\[LessEqual]", 
+      RowBox[{"Length", "[", "years", "]"}]}], ",", 
+     RowBox[{"i", "+=", "1"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"yearDetailsJs", "=", 
+       RowBox[{"\"\<yearDetails[\>\"", "<>", 
+        RowBox[{"ToString", "[", 
+         RowBox[{"i", "-", "1"}], "]"}], "<>", "\"\<]=\>\"", "<>", 
+        RowBox[{"Js", "[", 
+         RowBox[{"ToString", "[", 
+          RowBox[{
+           RowBox[{"yearDetails", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], ",", "InputForm"}], "]"}], "]"}], 
+        "<>", "\"\<;\\n\>\""}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Export", "[", 
+       RowBox[{
+        RowBox[{"\"\</home/xcolwell/word_data_year_details_\>\"", "<>", 
+         RowBox[{"ToString", "[", 
+          RowBox[{"i", "-", "1"}], "]"}], "<>", "\"\<.js\>\""}], ",", 
+        "yearDetailsJs", ",", "\"\<Text\>\""}], "]"}], ";"}]}], 
+    "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.509899228808837*^9, 3.509899305079196*^9}, 
+   3.509899588234527*^9, 3.5099016092088213`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"InverseIndexes", "[", "indexes_", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"tindexes", "=", 
+       RowBox[{"ConstantArray", "[", 
+        RowBox[{"0", ",", 
+         RowBox[{"Length", "[", "indexes", "]"}]}], "]"}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"tindexes", "[", 
+        RowBox[{"[", "indexes", "]"}], "]"}], "=", 
+       RowBox[{"Range", "[", 
+        RowBox[{"1", ",", 
+         RowBox[{"Length", "[", "indexes", "]"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", "tindexes"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.510172580874813*^9, 3.51017271677677*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.509830242665226*^9, 3.509830246816928*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Needs", "[", "\"\<MultivariateStatistics`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"WordIndexesByFunctionAmount", "[", "index_", "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"functionAmounts", ",", "pcs"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"functionAmounts", "=", 
+       RowBox[{"Normalize", "/@", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Log", "[", 
+                 RowBox[{"Max", "[", 
+                  RowBox[{"1", ",", "#"}], "]"}], "]"}], "&"}], "/@", "#"}], 
+              ")"}], "/", 
+             RowBox[{"Max", "[", 
+              RowBox[{"1", ",", 
+               RowBox[{"Log", "[", 
+                RowBox[{"10", ",", 
+                 RowBox[{"Max", "[", 
+                  RowBox[{"1", ",", 
+                   RowBox[{"Max", "[", "#", "]"}]}], "]"}]}], "]"}]}], 
+              "]"}]}], ")"}], "&"}], "/@", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"#", "[", 
+              RowBox[{"[", 
+               RowBox[{"All", ",", "1"}], "]"}], "]"}], "&"}], "/@", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Partition", "[", 
+                RowBox[{"#", ",", "2"}], "]"}], "&"}], "/@", 
+              RowBox[{"yearDetails", "[", 
+               RowBox[{"[", 
+                RowBox[{"index", ",", "All", ",", "4"}], "]"}], "]"}]}], 
+             ")"}]}], ")"}]}], ")"}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"pcs", "=", 
+       RowBox[{
+       "MultivariateStatistics`PrincipalComponents", "[", "functionAmounts", 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"SortBy", "[", 
+       RowBox[{
+        RowBox[{"Range", "[", 
+         RowBox[{"1", ",", 
+          RowBox[{"Length", "[", "wordSummaries", "]"}]}], "]"}], ",", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"pcs", "[", 
+            RowBox[{"[", 
+             RowBox[{"#", ",", "1"}], "]"}], "]"}], ",", 
+           RowBox[{"wordSummaries", "[", 
+            RowBox[{"[", 
+             RowBox[{"#", ",", "1"}], "]"}], "]"}]}], "}"}], "&"}]}], 
+       "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"WordIndexesByFunctionAccounts", "[", "index_", "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"functionAccounts", ",", "pcs"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"functionAccounts", "=", 
+       RowBox[{"Normalize", "/@", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Log", "[", 
+                 RowBox[{"Max", "[", 
+                  RowBox[{"1", ",", "#"}], "]"}], "]"}], "&"}], "/@", "#"}], 
+              ")"}], "/", 
+             RowBox[{"Max", "[", 
+              RowBox[{"1", ",", 
+               RowBox[{"Log", "[", 
+                RowBox[{"10", ",", 
+                 RowBox[{"Max", "[", 
+                  RowBox[{"1", ",", 
+                   RowBox[{"Max", "[", "#", "]"}]}], "]"}]}], "]"}]}], 
+              "]"}]}], ")"}], "&"}], "/@", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"#", "[", 
+              RowBox[{"[", 
+               RowBox[{"All", ",", "2"}], "]"}], "]"}], "&"}], "/@", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Partition", "[", 
+                RowBox[{"#", ",", "2"}], "]"}], "&"}], "/@", 
+              RowBox[{"yearDetails", "[", 
+               RowBox[{"[", 
+                RowBox[{"index", ",", "All", ",", "4"}], "]"}], "]"}]}], 
+             ")"}]}], ")"}]}], ")"}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"pcs", "=", 
+       RowBox[{
+       "MultivariateStatistics`PrincipalComponents", "[", "functionAccounts", 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"SortBy", "[", 
+       RowBox[{
+        RowBox[{"Range", "[", 
+         RowBox[{"1", ",", 
+          RowBox[{"Length", "[", "wordSummaries", "]"}]}], "]"}], ",", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"pcs", "[", 
+            RowBox[{"[", 
+             RowBox[{"#", ",", "1"}], "]"}], "]"}], ",", 
+           RowBox[{"wordSummaries", "[", 
+            RowBox[{"[", 
+             RowBox[{"#", ",", "1"}], "]"}], "]"}]}], "}"}], "&"}]}], 
+       "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.51008064988302*^9, 3.5100807932887897`*^9}, {
+   3.510080824480773*^9, 3.5100808728452578`*^9}, {3.5100809436454697`*^9, 
+   3.5100809686583023`*^9}, {3.5100810515579157`*^9, 3.510081055856148*^9}, {
+   3.510081096020226*^9, 3.510081096893778*^9}, {3.510081132435853*^9, 
+   3.510081190209733*^9}, 3.510081225433601*^9, {3.51008144907021*^9, 
+   3.510081499955887*^9}, {3.510081608538651*^9, 3.5100816621321993`*^9}, {
+   3.5100817919326773`*^9, 3.5100817937337837`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Log", "[", 
+         RowBox[{"Max", "[", 
+          RowBox[{"1", ",", "#"}], "]"}], "]"}], "&"}], "/@", "#"}], ")"}], 
+     "/", 
+     RowBox[{"Max", "[", 
+      RowBox[{"1", ",", 
+       RowBox[{"Log", "[", 
+        RowBox[{"10", ",", 
+         RowBox[{"Max", "[", 
+          RowBox[{"1", ",", 
+           RowBox[{"Max", "[", "#", "]"}]}], "]"}]}], "]"}]}], "]"}]}], ")"}],
+    "&"}], "/@", 
+  RowBox[{"(", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"#", "[", 
+      RowBox[{"[", 
+       RowBox[{"All", ",", "2"}], "]"}], "]"}], "&"}], "/@", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Partition", "[", 
+        RowBox[{"#", ",", "2"}], "]"}], "&"}], "/@", 
+      RowBox[{"yearDetails", "[", 
+       RowBox[{"[", 
+        RowBox[{"1", ",", "All", ",", "4"}], "]"}], "]"}]}], ")"}]}], 
+   ")"}]}]], "Input",
+ CellChangeTimes->{
+  3.510081685375222*^9, {3.5100817400082207`*^9, 3.510081767287458*^9}}],
+
+Cell[BoxData[
+ InterpretationBox[
+  TagBox[
+   PanelBox[GridBox[{
+      {
+       StyleBox[
+        StyleBox[
+         DynamicBox[ToBoxes[
+           FEPrivate`FrontEndResource["FEStrings", "sizeExplanation"], 
+           StandardForm],
+          ImageSizeCache->{377., {3., 10.}}],
+         StripOnInput->False,
+         DynamicUpdating->True], "Panel",
+        StripOnInput->False,
+        Background->None]},
+      {
+       ItemBox[
+        TagBox[
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"\[LeftSkeleton]", "1858", "\[RightSkeleton]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", 
+             RowBox[{"Log", "[", "2", "]"}], ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             RowBox[{"Log", "[", "2", "]"}], ",", "0", ",", "0", ",", "0", 
+             ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+             "0", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}]}], "}"}],
+         Short[#, 5]& ],
+        Background->GrayLevel[1],
+        BaseStyle->{Deployed -> False},
+        Frame->True,
+        FrameStyle->GrayLevel[0, 0.2],
+        StripOnInput->False]},
+      {
+       RowBox[{
+        ButtonBox[
+         StyleBox[
+          StyleBox[
+           DynamicBox[ToBoxes[
+             FEPrivate`FrontEndResource["FEStrings", "sizeShowLess"], 
+             StandardForm],
+            ImageSizeCache->{68., {0., 10.}}],
+           StripOnInput->False,
+           DynamicUpdating->True], "Panel",
+          StripOnInput->False,
+          Background->None],
+         Appearance->Automatic,
+         ButtonFunction:>OutputSizeLimit`ButtonFunction[
+          Identity, 57, 23003569116855402888, 5/2],
+         Enabled->True,
+         Evaluator->Automatic,
+         Method->"Queued"], "\[ThinSpace]", 
+        ButtonBox[
+         StyleBox[
+          StyleBox[
+           DynamicBox[ToBoxes[
+             FEPrivate`FrontEndResource["FEStrings", "sizeShowMore"], 
+             StandardForm],
+            ImageSizeCache->{71., {0., 10.}}],
+           StripOnInput->False,
+           DynamicUpdating->True], "Panel",
+          StripOnInput->False,
+          Background->None],
+         Appearance->Automatic,
+         ButtonFunction:>OutputSizeLimit`ButtonFunction[
+          Identity, 57, 23003569116855402888, 5 2],
+         Enabled->True,
+         Evaluator->Automatic,
+         Method->"Queued"], "\[ThinSpace]", 
+        ButtonBox[
+         StyleBox[
+          StyleBox[
+           DynamicBox[ToBoxes[
+             FEPrivate`FrontEndResource["FEStrings", "sizeShowAll"], 
+             StandardForm],
+            ImageSizeCache->{110., {3., 10.}}],
+           StripOnInput->False,
+           DynamicUpdating->True], "Panel",
+          StripOnInput->False,
+          Background->None],
+         Appearance->Automatic,
+         ButtonFunction:>OutputSizeLimit`ButtonFunction[
+          Identity, 57, 23003569116855402888, Infinity],
+         Enabled->True,
+         Evaluator->Automatic,
+         Method->"Queued"], "\[ThinSpace]", 
+        ButtonBox[
+         StyleBox[
+          StyleBox[
+           DynamicBox[ToBoxes[
+             FEPrivate`FrontEndResource["FEStrings", "sizeChangeLimit"], 
+             StandardForm],
+            ImageSizeCache->{101., {0., 10.}}],
+           StripOnInput->False,
+           DynamicUpdating->True], "Panel",
+          StripOnInput->False,
+          Background->None],
+         Appearance->Automatic,
+         ButtonFunction:>FrontEndExecute[{
+            FrontEnd`SetOptions[
+            FrontEnd`$FrontEnd, 
+             FrontEnd`PreferencesSettings -> {"Page" -> "Evaluation"}], 
+            FrontEnd`FrontEndToken["PreferencesDialog"]}],
+         Evaluator->None,
+         Method->"Preemptive"]}]}
+     },
+     GridBoxAlignment->{
+      "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+       "RowsIndexed" -> {}},
+     GridBoxDividers->{
+      "Columns" -> {{False}}, "ColumnsIndexed" -> {}, "Rows" -> {{False}}, 
+       "RowsIndexed" -> {}},
+     GridBoxItemSize->{
+      "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, "Rows" -> {{1.}}, 
+       "RowsIndexed" -> {}},
+     GridBoxSpacings->{"Columns" -> {
+         Offset[0.27999999999999997`], {
+          Offset[0.5599999999999999]}, 
+         Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+         Offset[0.2], {
+          Offset[1.2]}, 
+         Offset[0.2]}, "RowsIndexed" -> {}}],
+    DefaultBaseStyle->{},
+    FrameMargins->5],
+   Deploy,
+   DefaultBaseStyle->{Deployed -> True}],
+  Out[57]]], "Output",
+ CellChangeTimes->{3.51008168646513*^9, 3.5100817692254467`*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.509815393291279*^9, 3.509815394703401*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Trends", "[", "wordIndex_", "]"}], ":=", 
+   RowBox[{"{", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"yearDetails", "[", 
+      RowBox[{"[", 
+       RowBox[{"All", ",", "wordIndex", ",", "1"}], "]"}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"yearDetails", "[", 
+      RowBox[{"[", 
+       RowBox[{"All", ",", "wordIndex", ",", "2"}], "]"}], "]"}]}], 
+    "\[IndentingNewLine]", "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"NormTrends", "[", "wordIndex_", "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", "trends", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"trends", "=", 
+       RowBox[{"Trends", "[", "wordIndex", "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"N", "[", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"trends", "[", 
+             RowBox[{"[", "1", "]"}], "]"}], "-", 
+            RowBox[{"Min", "[", 
+             RowBox[{"trends", "[", 
+              RowBox[{"[", "1", "]"}], "]"}], "]"}]}], ")"}], "/", 
+          RowBox[{"Max", "[", 
+           RowBox[{"1", ",", 
+            RowBox[{
+             RowBox[{"Max", "[", 
+              RowBox[{"trends", "[", 
+               RowBox[{"[", "1", "]"}], "]"}], "]"}], "-", 
+             RowBox[{"Min", "[", 
+              RowBox[{"trends", "[", 
+               RowBox[{"[", "1", "]"}], "]"}], "]"}]}]}], "]"}]}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"trends", "[", 
+             RowBox[{"[", "2", "]"}], "]"}], "-", 
+            RowBox[{"Min", "[", 
+             RowBox[{"trends", "[", 
+              RowBox[{"[", "2", "]"}], "]"}], "]"}]}], ")"}], "/", 
+          RowBox[{"Max", "[", 
+           RowBox[{"1", ",", 
+            RowBox[{
+             RowBox[{"Max", "[", 
+              RowBox[{"trends", "[", 
+               RowBox[{"[", "2", "]"}], "]"}], "]"}], "-", 
+             RowBox[{"Min", "[", 
+              RowBox[{"trends", "[", 
+               RowBox[{"[", "2", "]"}], "]"}], "]"}]}]}], "]"}]}]}], 
+        "\[IndentingNewLine]", "}"}], "]"}]}]}], "\[IndentingNewLine]", 
+    "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.509824424393888*^9, 3.50982456111024*^9}, {
+  3.509824626888867*^9, 3.509824627082046*^9}, {3.5098295476719646`*^9, 
+  3.509829558952015*^9}, {3.509829616015236*^9, 3.509829657533338*^9}, {
+  3.509830626016481*^9, 3.509830626203369*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Listf", "[", 
+    RowBox[{"i_", ",", "list_"}], "]"}], ":=", 
+   RowBox[{"If", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"i", "\[LessEqual]", " ", "0"}], " ", "||", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Length", "[", "list", "]"}], "+", "1"}], "\[LessEqual]", 
+       "i"}]}], ",", "0", ",", 
+     RowBox[{"list", "[", 
+      RowBox[{"[", "i", "]"}], "]"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"CSim", "[", 
+    RowBox[{"a_", ",", "b_"}], "]"}], ":=", 
+   RowBox[{
+    RowBox[{"Total", "[", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"DiscreteConvolve", "[", 
+        RowBox[{
+         RowBox[{"Listf", "[", 
+          RowBox[{"i", ",", "a"}], "]"}], ",", 
+         RowBox[{"Listf", "[", 
+          RowBox[{"i", ",", "b"}], "]"}], ",", "i", ",", "m"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"m", ",", "0", ",", 
+         RowBox[{
+          RowBox[{"Length", "[", "a", "]"}], "+", 
+          RowBox[{"Length", "[", "b", "]"}]}]}], "}"}]}], "]"}], "]"}], "/", 
+    RowBox[{"Max", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Total", "[", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"DiscreteConvolve", "[", 
+          RowBox[{
+           RowBox[{"Listf", "[", 
+            RowBox[{"i", ",", "a"}], "]"}], ",", 
+           RowBox[{"Listf", "[", 
+            RowBox[{"i", ",", "a"}], "]"}], ",", "i", ",", "m"}], "]"}], ",", 
+         
+         RowBox[{"{", 
+          RowBox[{"m", ",", "0", ",", 
+           RowBox[{
+            RowBox[{"Length", "[", "a", "]"}], "+", 
+            RowBox[{"Length", "[", "a", "]"}]}]}], "}"}]}], "]"}], "]"}], ",",
+       "\[IndentingNewLine]", 
+      RowBox[{"Total", "[", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"DiscreteConvolve", "[", 
+          RowBox[{
+           RowBox[{"Listf", "[", 
+            RowBox[{"i", ",", "b"}], "]"}], ",", 
+           RowBox[{"Listf", "[", 
+            RowBox[{"i", ",", "b"}], "]"}], ",", "i", ",", "m"}], "]"}], ",", 
+         
+         RowBox[{"{", 
+          RowBox[{"m", ",", "0", ",", 
+           RowBox[{
+            RowBox[{"Length", "[", "b", "]"}], "+", 
+            RowBox[{"Length", "[", "b", "]"}]}]}], "}"}]}], "]"}], "]"}]}], 
+     "\[IndentingNewLine]", "]"}]}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.5098247200507793`*^9, 3.509824808761849*^9}, 
+   3.509824851051778*^9, {3.509829482545451*^9, 3.5098294848513613`*^9}, {
+   3.509829759006864*^9, 3.5098297663734083`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"NormTrends", "[", "290", "]"}]], "Input",
+ CellChangeTimes->{{3.509829488502694*^9, 3.509829507752445*^9}, {
+  3.5098295640580997`*^9, 3.509829591781084*^9}, {3.509829627889598*^9, 
+  3.509829628254436*^9}, {3.509829670152012*^9, 3.509829684114315*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Length", "[", "wordSummaries", "]"}], "^", "2"}]], "Input",
+ CellChangeTimes->{{3.509830015387095*^9, 3.509830026067586*^9}}],
+
+Cell[BoxData[
+ RowBox[{"CSim", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"NormTrends", "[", "290", "]"}], "[", 
+    RowBox[{"[", "1", "]"}], "]"}], ",", 
+   RowBox[{
+    RowBox[{"NormTrends", "[", "292", "]"}], "[", 
+    RowBox[{"[", "1", "]"}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.509829689054771*^9, 3.509829743954666*^9}, 
+   3.5098297746584883`*^9, 3.50982982389049*^9}],
+
+Cell[BoxData[
+ RowBox[{"(*", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+   "1.", " ", "create", " ", "a", " ", "set", " ", "of", " ", "words", " ", 
+    "across", " ", "all", " ", "years", "\[IndentingNewLine]", "2.", " ", 
+    "for", " ", "each", " ", "word"}], ",", " ", 
+   RowBox[{
+   "fill", " ", "in", " ", "missing", " ", "years", " ", "with", " ", 
+    RowBox[{"(", 
+     RowBox[{"0", ",", " ", "0"}], ")"}], "\[IndentingNewLine]", "3.", " ", 
+    "plot", " ", "rank", " ", "over", " ", "years", "\[IndentingNewLine]", 
+    "4.", " ", "plot", " ", "amount", " ", "over", " ", "years"}]}], 
+  "\[IndentingNewLine]", "*)"}]], "Input",
+ CellChangeTimes->{{3.508547104467106*^9, 3.508547119500349*^9}, {
+  3.508547224616572*^9, 3.508547238368497*^9}, {3.508547270696303*^9, 
+  3.508547284244088*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ws", "=", 
+   RowBox[{"Union", "[", 
+    RowBox[{"Flatten", "[", 
+     RowBox[{"sums", "[", 
+      RowBox[{"[", 
+       RowBox[{"All", ",", "All", ",", "1"}], "]"}], "]"}], "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GenEmpty", "[", "sum_", "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", "sws", "}"}], ",", 
+     RowBox[{
+      RowBox[{"sws", "=", 
+       RowBox[{"sum", "[", 
+        RowBox[{"[", 
+         RowBox[{"All", ",", "1"}], "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"#", ",", "0", ",", "0", ",", 
+          RowBox[{"{", "}"}]}], "}"}], "&"}], "/@", 
+       RowBox[{"Sort", "[", 
+        RowBox[{"Select", "[", 
+         RowBox[{"ws", ",", 
+          RowBox[{
+           RowBox[{"Not", "[", 
+            RowBox[{"MemberQ", "[", 
+             RowBox[{"sws", ",", "#"}], "]"}], "]"}], "&"}]}], "]"}], 
+        "]"}]}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"nsums", "=", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Join", "[", 
+      RowBox[{"#", ",", 
+       RowBox[{"GenEmpty", "[", "#", "]"}]}], "]"}], "&"}], "/@", "sums"}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.50854729415102*^9, 3.508547317034433*^9}, {
+  3.508547362757812*^9, 3.5085474012623053`*^9}, {3.5085476103770237`*^9, 
+  3.508547782829405*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"trends", "=", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"#", "[", 
+        RowBox[{"[", 
+         RowBox[{"1", ",", "1"}], "]"}], "]"}], ",", 
+       RowBox[{"#", "[", 
+        RowBox[{"[", 
+         RowBox[{"All", ",", 
+          RowBox[{"{", 
+           RowBox[{"2", ",", "3"}], "}"}]}], "]"}], "]"}]}], "}"}], "&"}], "/@", 
+    RowBox[{"GatherBy", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Flatten", "[", 
+        RowBox[{"nsums", ",", "1"}], "]"}], "[", 
+       RowBox[{"[", 
+        RowBox[{"All", ",", 
+         RowBox[{"{", 
+          RowBox[{"1", ",", "2", ",", "3"}], "}"}]}], "]"}], "]"}], ",", 
+      RowBox[{
+       RowBox[{"#", "[", 
+        RowBox[{"[", "1", "]"}], "]"}], "&"}]}], "]"}]}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5085478286619263`*^9, 3.508547891562613*^9}, {
+  3.508547967455373*^9, 3.508548002801523*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"W", ",", "H"}], "}"}], "=", 
+   RowBox[{"{", 
+    RowBox[{"300", ",", "100"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"TrendPlot1", "[", "trend_", "]"}], ":=", 
+   RowBox[{"ListLinePlot", "[", 
+    RowBox[{
+     RowBox[{"trend", "[", 
+      RowBox[{"[", 
+       RowBox[{"2", ",", "All", ",", "1"}], "]"}], "]"}], ",", 
+     RowBox[{"InterpolationOrder", "\[Rule]", "0"}], ",", 
+     RowBox[{"ImageSize", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"W", ",", "H"}], "}"}]}], ",", 
+     RowBox[{"PlotLabel", "\[Rule]", 
+      RowBox[{"trend", "[", 
+       RowBox[{"[", "1", "]"}], "]"}]}], ",", 
+     RowBox[{"AspectRatio", "\[Rule]", 
+      RowBox[{"H", "/", "W"}]}], ",", 
+     RowBox[{"Filling", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"1", "\[Rule]", " ", 
+        RowBox[{"{", 
+         RowBox[{"Axis", ",", "LightBlue"}], "}"}]}], "}"}]}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", "Blue"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"TrendPlot2", "[", "trend_", "]"}], ":=", 
+   RowBox[{"ListLinePlot", "[", 
+    RowBox[{
+     RowBox[{"trend", "[", 
+      RowBox[{"[", 
+       RowBox[{"2", ",", "All", ",", "2"}], "]"}], "]"}], ",", 
+     RowBox[{"InterpolationOrder", "\[Rule]", "0"}], ",", 
+     RowBox[{"ImageSize", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"W", ",", "H"}], "}"}]}], ",", 
+     RowBox[{"PlotLabel", "\[Rule]", 
+      RowBox[{"trend", "[", 
+       RowBox[{"[", "1", "]"}], "]"}]}], ",", 
+     RowBox[{"AspectRatio", "\[Rule]", 
+      RowBox[{"H", "/", "W"}]}], ",", 
+     RowBox[{"Filling", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"1", "\[Rule]", " ", 
+        RowBox[{"{", 
+         RowBox[{"Axis", ",", "LightOrange"}], "}"}]}], "}"}]}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", "Orange"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"TrendPlot3", "[", "trend_", "]"}], ":=", 
+   RowBox[{"GraphicsGrid", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"TrendPlot1", "[", "trend", "]"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"TrendPlot2", "[", "trend", "]"}], "}"}]}], "}"}], "]"}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.50854801648315*^9, 3.508548046781747*^9}, {
+  3.5085482359897013`*^9, 3.508548493861916*^9}, {3.5085501132940598`*^9, 
+  3.5085501478201513`*^9}, {3.508550415116459*^9, 3.508550425186407*^9}, {
+  3.508550457435416*^9, 3.508550508787648*^9}, {3.5085505388764687`*^9, 
+  3.508550553586137*^9}}],
+
+Cell[BoxData[
+ RowBox[{"TrendPlot3", "/@", 
+  RowBox[{"trends", "[", 
+   RowBox[{"[", 
+    RowBox[{"1", ";;", "80"}], "]"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.508548050881549*^9, 3.508548072760605*^9}, {
+   3.508548116702202*^9, 3.5085481738881598`*^9}, {3.5085485025991163`*^9, 
+   3.508548507898059*^9}, 3.508548563745792*^9, {3.5085501512404127`*^9, 
+   3.5085501521249933`*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.508547639653902*^9, 3.508547641460267*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{
+  "form", " ", "pdfs", " ", "and", " ", "PCA", " ", "sort", " ", "the", " ", 
+   "plots", "\[IndentingNewLine]", "to", " ", "show", " ", "similar", " ", 
+   RowBox[{
+    RowBox[{"trends", ".", "\[IndentingNewLine]", 
+     RowBox[{"(", 
+      RowBox[{"x", "-", "min"}], ")"}]}], "/", 
+    RowBox[{"(", 
+     RowBox[{"max", "-", "min"}], ")"}]}]}], "\[IndentingNewLine]", 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.508548671339717*^9, 3.508548690453025*^9}, {
+  3.508550887801721*^9, 3.508550897078683*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"TrendVec1", "[", "trend_", "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"vs", ",", "min", ",", "max", ",", "mean"}], "}"}], ",", 
+     RowBox[{
+      RowBox[{"vs", "=", 
+       RowBox[{"trend", "[", 
+        RowBox[{"[", 
+         RowBox[{"2", ",", "All", ",", "1"}], "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"min", "=", 
+       RowBox[{"Min", "[", "vs", "]"}]}], ";", " ", 
+      RowBox[{"max", "=", 
+       RowBox[{"Max", "[", "vs", "]"}]}], ";", 
+      RowBox[{"mean", "=", 
+       RowBox[{"Mean", "[", "vs", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"min", "\[Equal]", "max"}], ",", 
+        RowBox[{"ConstantArray", "[", 
+         RowBox[{"0", ",", 
+          RowBox[{"Length", "[", "vs", "]"}]}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"N", "[", 
+         RowBox[{"Normalize", "[", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"vs", "-", "mean"}], ")"}], "/", 
+           RowBox[{"Max", "[", 
+            RowBox[{
+             RowBox[{"max", "-", "mean"}], ",", 
+             RowBox[{"mean", "-", "min"}]}], "]"}]}], "]"}], "]"}]}], 
+       "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"TrendVec2", "[", "trend_", "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"vs", ",", "min", ",", "max", ",", "mean"}], "}"}], ",", 
+     RowBox[{
+      RowBox[{"vs", "=", 
+       RowBox[{"trend", "[", 
+        RowBox[{"[", 
+         RowBox[{"2", ",", "All", ",", "2"}], "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"min", "=", 
+       RowBox[{"Min", "[", "vs", "]"}]}], ";", " ", 
+      RowBox[{"max", "=", 
+       RowBox[{"Max", "[", "vs", "]"}]}], ";", 
+      RowBox[{"mean", "=", 
+       RowBox[{"Mean", "[", "vs", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"min", "\[Equal]", "max"}], ",", 
+        RowBox[{"ConstantArray", "[", 
+         RowBox[{"0", ",", 
+          RowBox[{"Length", "[", "vs", "]"}]}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"N", "[", 
+         RowBox[{"Normalize", "[", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"vs", "-", "mean"}], ")"}], "/", 
+           RowBox[{"Max", "[", 
+            RowBox[{
+             RowBox[{"max", "-", "mean"}], ",", 
+             RowBox[{"mean", "-", "min"}]}], "]"}]}], "]"}], "]"}]}], 
+       "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"TrendVec3", "[", "trend_", "]"}], ":=", 
+   RowBox[{"Join", "[", 
+    RowBox[{
+     RowBox[{"TrendVec1", "[", "trend", "]"}], ",", 
+     RowBox[{"TrendVec2", "[", "trend", "]"}]}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.508551069951269*^9, 3.508551140406708*^9}, {
+  3.508551208374825*^9, 3.5085513142675047`*^9}, {3.5085519123390617`*^9, 
+  3.508552011248576*^9}}],
+
+Cell[BoxData[{
+ RowBox[{"Needs", "[", "\"\<MultivariateStatistics`\>\"", 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"strends", "=", 
+   RowBox[{
+    RowBox[{"SortBy", "[", 
+     RowBox[{
+      RowBox[{"Partition", "[", 
+       RowBox[{
+        RowBox[{"Riffle", "[", 
+         RowBox[{"trends", ",", 
+          RowBox[{
+           RowBox[{"PrincipalComponents", "[", 
+            RowBox[{"TrendVec2", "/@", "trends"}], "]"}], "[", 
+           RowBox[{"[", 
+            RowBox[{"All", ",", "1"}], "]"}], "]"}]}], "]"}], ",", "2"}], 
+       "]"}], ",", 
+      RowBox[{
+       RowBox[{"#", "[", 
+        RowBox[{"[", "2", "]"}], "]"}], "&"}]}], "]"}], "[", 
+    RowBox[{"[", 
+     RowBox[{"All", ",", "1"}], "]"}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.508551342407981*^9, 3.50855147488273*^9}, 
+   3.508551606039564*^9, 3.508551644077639*^9}],
+
+Cell[BoxData[
+ RowBox[{"TrendPlot3", "/@", 
+  RowBox[{"strends", "[", 
+   RowBox[{"[", 
+    RowBox[{"200", ";;", "250"}], "]"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.50855149598906*^9, 3.50855153469304*^9}, {
+  3.508551586371684*^9, 3.508551589413005*^9}, {3.508551689110375*^9, 
+  3.5085517441161833`*^9}, {3.508551852940136*^9, 3.508551856196534*^9}, {
+  3.5085520719323*^9, 3.508552093965412*^9}}]
+},
+WindowSize->{1914, 1118},
+WindowMargins->{{0, Automatic}, {Automatic, 25}},
+FrontEndVersion->"7.0 for Linux x86 (64-bit) (February 25, 2009)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[545, 20, 1283, 34, 121, "Input"],
+Cell[1831, 56, 483, 14, 55, "Input"],
+Cell[2317, 72, 7060, 165, 473, "Input"],
+Cell[9380, 239, 135, 4, 32, "Input"],
+Cell[9518, 245, 404, 7, 32, "Input"],
+Cell[9925, 254, 225, 5, 32, "Input"],
+Cell[10153, 261, 227, 6, 32, "Input"],
+Cell[10383, 269, 145, 3, 32, "Input"],
+Cell[CellGroupData[{
+Cell[10553, 276, 4374, 101, 385, "Input"],
+Cell[14930, 379, 302, 6, 31, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[15269, 390, 3733, 89, 341, "Input"],
+Cell[19005, 481, 656, 17, 31, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[19698, 503, 4314, 103, 341, "Input"],
+Cell[24015, 608, 902, 22, 52, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[24954, 635, 8239, 192, 451, "Input"],
+Cell[33196, 829, 748, 19, 31, "Output"]
+}, Open  ]],
+Cell[33959, 851, 348, 8, 32, "Input"],
+Cell[34310, 861, 9461, 208, 693, "Input"],
+Cell[CellGroupData[{
+Cell[43796, 1073, 507, 9, 165, "Input"],
+Cell[44306, 1084, 127, 1, 31, "Output"]
+}, Open  ]],
+Cell[44448, 1088, 456, 10, 121, "Input"],
+Cell[44907, 1100, 2828, 69, 209, "Input"],
+Cell[47738, 1171, 603, 17, 32, "Input"],
+Cell[CellGroupData[{
+Cell[48366, 1192, 315, 7, 55, "Input"],
+Cell[48684, 1201, 96, 1, 31, "Output"],
+Cell[48783, 1204, 94, 1, 31, "Output"]
+}, Open  ]],
+Cell[48892, 1208, 1063, 27, 165, "Input"],
+Cell[49958, 1237, 91, 1, 32, "Input"],
+Cell[CellGroupData[{
+Cell[50074, 1242, 396, 7, 99, "Input"],
+Cell[50473, 1251, 125, 1, 31, "Output"]
+}, Open  ]],
+Cell[50613, 1255, 3687, 86, 275, "Input"],
+Cell[54303, 1343, 1452, 32, 165, "Input"],
+Cell[55758, 1377, 1717, 35, 165, "Input"],
+Cell[CellGroupData[{
+Cell[57500, 1416, 263, 6, 32, "Input"],
+Cell[57766, 1424, 222, 3, 31, "Output"]
+}, Open  ]],
+Cell[58003, 1430, 1877, 41, 165, "Input"],
+Cell[59883, 1473, 1344, 32, 143, "Input"],
+Cell[61230, 1507, 1308, 30, 143, "Input"],
+Cell[62541, 1539, 753, 21, 99, "Input"],
+Cell[63297, 1562, 92, 1, 32, "Input"],
+Cell[63392, 1565, 5323, 142, 275, "Input"],
+Cell[CellGroupData[{
+Cell[68740, 1711, 1048, 36, 32, "Input"],
+Cell[69791, 1749, 10155, 235, 218, "Output"]
+}, Open  ]],
+Cell[79961, 1987, 650, 9, 539, "Input"],
+Cell[80614, 1998, 2573, 67, 253, "Input"],
+Cell[83190, 2067, 2548, 70, 121, "Input"],
+Cell[85741, 2139, 277, 4, 32, "Input"],
+Cell[86021, 2145, 160, 3, 32, "Input"],
+Cell[86184, 2150, 385, 10, 32, "Input"],
+Cell[86572, 2162, 808, 16, 143, "Input"],
+Cell[87383, 2180, 1453, 45, 121, "Input"],
+Cell[88839, 2227, 917, 28, 32, "Input"],
+Cell[89759, 2257, 2574, 70, 99, "Input"],
+Cell[92336, 2329, 389, 8, 32, "Input"],
+Cell[92728, 2339, 92, 1, 32, "Input"],
+Cell[92823, 2342, 551, 13, 99, "Input"],
+Cell[93377, 2357, 3061, 84, 253, "Input"],
+Cell[96441, 2443, 862, 24, 55, "Input"],
+Cell[97306, 2469, 404, 8, 32, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
